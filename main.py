@@ -32,4 +32,6 @@ def generateVector():
 
 
 
+def overlap(u_etoile, u):
+    return (u_etoile.dot(u)/N)
 
