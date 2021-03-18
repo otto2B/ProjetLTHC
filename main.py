@@ -23,6 +23,8 @@ lambda_2 = lambda_1
 
 
 def generateVector():
+	v = MultivariateNormal(torch.zeros(N), torch.eye(N))
+	v = v/v.norm(2)
 	norm = np.random.normal
 	normal_deviates = norm(size=(dim, N))
 
