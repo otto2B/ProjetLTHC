@@ -20,20 +20,12 @@ lambda_2 = lambda_1
 
 
 # genere une matrice sur l'hypersphere
-
-
 def generateVector():
-	v = MultivariateNormal(torch.zeros(N), torch.eye(N))
-	v = v/v.norm(2)
-	norm = np.random.normal
-	normal_deviates = norm(size=(dim, N))
+    x = torch.normal(0, 1, size=(1, N))
+    x = x / torch.linalg.norm(x)
+    x = x * torch.sqrt(tensor_N)
+    return x
 
-	radius = np.sqrt((normal_deviates**2).sum(axis=0))
-	y = normal_deviates/radius
-	return y
-
-
-
-def overlap(u_etoile, u):
-    return (u_etoile.dot(u)/N)
-
+# calcul l'overlap entre deux tensors.
+def overlap(x_etoile, x):
+    return torch.dot(x_etoile, x)/N
