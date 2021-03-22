@@ -1,5 +1,5 @@
 import torch
-import tensorflow as tf
+#import tensorflow as tf
 import numpy as np
 
 #Size of the matrix Y
@@ -28,7 +28,7 @@ def generate_vector(d):
 
 # calcul l'overlap entre deux tenseurs.
 def overlap(x_etoile, x,d):
-    return torch.mm(torch.transpose(x_etoile,0,1), x)/d
+    return torch.mm(x_etoile, torch.transpose(x,0,1))/d
 
 
 def generate_Y(u_,v_): 
@@ -44,23 +44,23 @@ def proj(vector,d):
 def gradient_v_1(u_,v_,Y):
 	n = list(u_.shape)[1]
 	m = list(v_.shape)[1]
-	x = []
+	x = [[]]
 	for d in range(m):
 		sum = 0
 		for i in range(n):
 			sum += u_[0][i]*(Y[i][d].item()-u_[0][i]*v_[0][d])
-		x.append(-2/(n*m)*sum)
+		x[0].append(-2/(n*m)*sum)
 	return torch.tensor(x)
 	
 def gradient_u_1(u_,v_,Y):
 	n = list(u_.shape)[1]
 	m = list(v_.shape)[1]
-	x = []
+	x = [[]]
 	for d in range(n):
 		sum = 0
 		for i in range(m):
 			sum += v_[0][i]*(Y[d][i].item()-u_[0][d]*v_[0][i])
-		x.append(-2/(n*m)*sum)
+		x[0].append(-2/(n*m)*sum)
 	return torch.tensor(x)	
 	
 

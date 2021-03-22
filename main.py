@@ -1,5 +1,5 @@
 import torch
-import tensorflow as tf
+#import tensorflow as tf
 import numpy as np
 import functions as f
 
@@ -36,8 +36,10 @@ def main():
     v_p = torch.zeros(1,M)
     
     for i in range(N):
-    	u_n = u_p - 1/lambda_1 * torch.mm(f.proj(u_p,N),f.gradient_u_1(u_p,v_p,Y)) * dt + np.sqrt(2/(lambda_1*beta_u)) * torch.mm(f.proj(u_p,N),torch.normal(0, dt, size=(1, N)).float()) - (N-1)/(N*lambda_1*beta_u)*u_p*dt
-    	v_n = v_p - 1/lambda_2 * torch.mm(f.proj(v_p,M),f.gradient_v_1(u_p,v_p,Y)) * dt + np.sqrt(2/(lambda_1*beta_v)) * torch.mm(f.proj(v_p,M),torch.normal(0, dt, size=(1, M)).float()) - (M-1)/(M*lambda_2*beta_v)*v_p*dt
+        u_n = u_p - 1/lambda_1 * torch.transpose(torch.mm(f.proj(u_p,N),torch.transpose(f.gradient_u_1(u_p,v_p,Y), 0, 1)), 0, 1) * dt + np.sqrt(2/(lambda_1*beta_u)) * torch.transpose(torch.mm(f.proj(u_p,N),torch.normal(0, dt, size=(N, 1)).float()),0,1) - (N-1)/(N*lambda_1*beta_u)*u_p*dt
+        v_n = v_p - 1/lambda_2 * torch.transpose(torch.mm(f.proj(v_p,M),torch.transpose(f.gradient_v_1(u_p,v_p,Y), 0, 1)), 0, 1) * dt + np.sqrt(2/(lambda_1*beta_v)) * torch.transpose(torch.mm(f.proj(v_p,M),torch.normal(0, dt, size=(M, 1)).float()),0,1) - (M-1)/(M*lambda_2*beta_v)*v_p*dt
+        u_p = u_n
+        v_p = v_n
     
     print(f.overlap(u_,u_n,N))
     print(f.overlap(v_,v_n,M))
