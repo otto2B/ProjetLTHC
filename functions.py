@@ -28,7 +28,7 @@ def generate_vector(d):
 
 # calcul l'overlap entre deux tenseurs.
 def overlap(x_etoile, x,d):
-    return torch.dot(x_etoile, x)/d
+    return torch.mm(torch.transpose(x_etoile,0,1), x)/d
 
 
 def generate_Y(u_,v_): 
@@ -38,6 +38,9 @@ def generate_Y(u_,v_):
 	eta = torch.normal(0, 1, size=(n, m))
 	return uv + np.sqrt(n/lambda_)*eta
 	
+def proj(vector,d):
+	return torch.eye(d)- 1/d *torch.mm(torch.transpose(vector,0,1),vector)
+	
 def gradient_v_1(u_,v_,Y):
 	n = list(u_.shape)[1]
 	m = list(v_.shape)[1]
@@ -45,7 +48,7 @@ def gradient_v_1(u_,v_,Y):
 	for d in range(m):
 		sum = 0
 		for i in range(n):
-			sum += u_[i]*(Y[i][d].item()-u_[i]*v_[d])
+			sum += u_[0][i]*(Y[i][d].item()-u_[0][i]*v_[0][d])
 		x.append(-2/(n*m)*sum)
 	return torch.tensor(x)
 	
@@ -56,7 +59,7 @@ def gradient_u_1(u_,v_,Y):
 	for d in range(n):
 		sum = 0
 		for i in range(m):
-			sum += v_[i]*(Y[d][i].item()-u_[d]*v_[i])
+			sum += v_[0][i]*(Y[d][i].item()-u_[0][d]*v_[0][i])
 		x.append(-2/(n*m)*sum)
 	return torch.tensor(x)	
 	
@@ -68,7 +71,7 @@ def gradient_v_2(u_,v_,Y):
 	for d in range(m):
 		sum = 0
 		for i in range(n):
-			sum += u_[i]*(Y[i][d].item()-np.sqrt(lambda_/n)*u_[i]*v_[d])
+			sum += u_[0][i]*(Y[i][d].item()-np.sqrt(lambda_/n)*u_[0][i]*v_[0][d])
 		x.append(-np.sqrt(lambda_/m)*sum)
 	return torch.tensor(x)
 	
@@ -79,7 +82,9 @@ def gradient_u_2(u_,v_,Y):
 	for d in range(n):
 		sum = 0
 		for i in range(m):
-			sum += v_[i]*(Y[d][i].item()-np.sqrt(lambda_/n)*u_[d]*v_[i])
+			sum += v_[0][i]*(Y[d][i].item()-np.sqrt(lambda_/n)*u_[0][d]*v_[0][i])
 		x.append(-np.sqrt(lambda_/n)*sum)
 	return torch.tensor(x)	
+	
+
 	
