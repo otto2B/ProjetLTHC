@@ -46,7 +46,7 @@ def main_gradient_1_sans_proj(u_p, v_p, Y, u_, v_):
 
     for i in range(N):
         u_n = u_p - 1/lambda_1 * f.gradient_u_1(u_p,v_p,Y) * dt + np.sqrt(2/(lambda_1*beta_u)) * torch.normal(0, dt, size=(1, N)).float() - (N-1)/(N*lambda_1*beta_u)*u_p*dt
-        v_n = v_p - 1/lambda_2 * f.gradient_v_1(u_p,v_p,Y) * dt + np.sqrt(2/(lambda_1*beta_v)) * torch.normal(0, dt, size=(1, M)).float() - (M-1)/(M*lambda_2*beta_v)*v_p*dt
+        v_n = v_p - 1/lambda_2 * f.gradient_v_1(u_p,v_p,Y) * dt + np.sqrt(2/(lambda_2*beta_v)) * torch.normal(0, dt, size=(1, M)).float() - (M-1)/(M*lambda_2*beta_v)*v_p*dt
         u_p = u_n
         v_p = v_n
     
@@ -61,7 +61,7 @@ def main_gradient_1_avec_proj(u_p, v_p, Y, u_, v_):
 
     for i in range(N):
         u_n = u_p - 1/lambda_1 * torch.transpose(torch.mm(f.proj(u_p,N),torch.transpose(f.gradient_u_1(u_p,v_p,Y), 0, 1)), 0, 1) * dt + np.sqrt(2/(lambda_1*beta_u)) * torch.transpose(torch.mm(f.proj(u_p,N),torch.normal(0, dt, size=(N, 1)).float()),0,1) - (N-1)/(N*lambda_1*beta_u)*u_p*dt
-        v_n = v_p - 1/lambda_2 * torch.transpose(torch.mm(f.proj(v_p,M),torch.transpose(f.gradient_v_1(u_p,v_p,Y), 0, 1)), 0, 1) * dt + np.sqrt(2/(lambda_1*beta_v)) * torch.transpose(torch.mm(f.proj(v_p,M),torch.normal(0, dt, size=(M, 1)).float()),0,1) - (M-1)/(M*lambda_2*beta_v)*v_p*dt
+        v_n = v_p - 1/lambda_2 * torch.transpose(torch.mm(f.proj(v_p,M),torch.transpose(f.gradient_v_1(u_p,v_p,Y), 0, 1)), 0, 1) * dt + np.sqrt(2/(lambda_2*beta_v)) * torch.transpose(torch.mm(f.proj(v_p,M),torch.normal(0, dt, size=(M, 1)).float()),0,1) - (M-1)/(M*lambda_2*beta_v)*v_p*dt
         u_p = u_n
         v_p = v_n
     
@@ -78,7 +78,7 @@ def main_gradient_2_sans_proj(u_p, v_p, Y, u_, v_):
 
     for i in range(N):
         u_n = u_p - 1/lambda_1 * f.gradient_u_2(u_p,v_p,Y) * dt + np.sqrt(2/(lambda_1*beta_u)) * torch.normal(0, dt, size=(1, N)).float() - (N-1)/(N*lambda_1*beta_u)*u_p*dt
-        v_n = v_p - 1/lambda_2 * f.gradient_v_2(u_p,v_p,Y) * dt + np.sqrt(2/(lambda_1*beta_v)) * torch.normal(0, dt, size=(1, M)).float() - (M-1)/(M*lambda_2*beta_v)*v_p*dt
+        v_n = v_p - 1/lambda_2 * f.gradient_v_2(u_p,v_p,Y) * dt + np.sqrt(2/(lambda_2*beta_v)) * torch.normal(0, dt, size=(1, M)).float() - (M-1)/(M*lambda_2*beta_v)*v_p*dt
         u_p = u_n
         v_p = v_n
     
@@ -93,7 +93,7 @@ def main_gradient_2_avec_proj(u_p, v_p, Y, u_, v_):
 
     for i in range(N):
         u_n = u_p - 1/lambda_1 * torch.transpose(torch.mm(f.proj(u_p,N),torch.transpose(f.gradient_u_2(u_p,v_p,Y), 0, 1)), 0, 1) * dt + np.sqrt(2/(lambda_1*beta_u)) * torch.transpose(torch.mm(f.proj(u_p,N),torch.normal(0, dt, size=(N, 1)).float()),0,1) - (N-1)/(N*lambda_1*beta_u)*u_p*dt
-        v_n = v_p - 1/lambda_2 * torch.transpose(torch.mm(f.proj(v_p,M),torch.transpose(f.gradient_v_2(u_p,v_p,Y), 0, 1)), 0, 1) * dt + np.sqrt(2/(lambda_1*beta_v)) * torch.transpose(torch.mm(f.proj(v_p,M),torch.normal(0, dt, size=(M, 1)).float()),0,1) - (M-1)/(M*lambda_2*beta_v)*v_p*dt
+        v_n = v_p - 1/lambda_2 * torch.transpose(torch.mm(f.proj(v_p,M),torch.transpose(f.gradient_v_2(u_p,v_p,Y), 0, 1)), 0, 1) * dt + np.sqrt(2/(lambda_2*beta_v)) * torch.transpose(torch.mm(f.proj(v_p,M),torch.normal(0, dt, size=(M, 1)).float()),0,1) - (M-1)/(M*lambda_2*beta_v)*v_p*dt
         u_p = u_n
         v_p = v_n
     
@@ -107,7 +107,7 @@ def main_gradient_2_avec_proj(u_p, v_p, Y, u_, v_):
 # ecrit les résultats dans un fichier csv
 # Il faut spécifier le chemin du fichier dans path.
 def writeIntoFile(res_g1, res_g2):
-    path = r"....."
+    path = r"C:\Users\Admin\Desktop\Bachelor Project\data.xls"
 
     f = open(path, 'a', newline = "")
 
