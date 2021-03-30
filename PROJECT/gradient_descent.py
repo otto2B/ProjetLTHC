@@ -33,7 +33,7 @@ def main_gradient_1_sans_proj_normalisation(u_p, v_p, Y, u_, v_, N, M, lambda_, 
         v_n = v_n / torch.linalg.norm(v_n)
         u_n = u_n * torch.sqrt(torch.tensor(N))
         v_n = v_n * torch.sqrt(torch.tensor(N))
-        print(i," : ", torch.linalg.norm(u_n), torch.linalg.norm(v_n))
+        #print(i," : ", torch.linalg.norm(u_n), torch.linalg.norm(v_n))
         u_p = u_n
         v_p = v_n
     
@@ -84,17 +84,17 @@ def main_gradient_2_sans_proj_normalisation(u_p, v_p, Y, u_, v_, N, M, lambda_, 
 
         sqrt_dt = torch.tensor(np.sqrt(dt))
 
-        u_1 = 1/lambda_1 * f.gradient_u_2(u_p,v_p,Y,lambda_) * dt
-        u_2 = torch.sqrt(torch.tensor(2/(lambda_1*beta_u))) * torch.normal(0, sqrt_dt, size=(1, N)).float()
-        u_3 = (N-1)/(N*lambda_1*beta_u)*u_p*dt
+        u_1 = (1/lambda_1) * f.gradient_u_2(u_p,v_p,Y,lambda_) * dt
+        u_2 = torch.sqrt(torch.tensor(2/(lambda_1*beta_u))) * torch.normal(0, sqrt_dt, size=(1, N))
+        u_3 = ((N-1)/(N*lambda_1*beta_u))*u_p*dt
 
         #print(u_1, " ", u_2, " ", u_3)
 
         u_n = u_p - u_1 + u_2 - u_3
 
         v_1 = 1/lambda_2 * f.gradient_v_2(u_p,v_p,Y,lambda_) * dt
-        v_2 = torch.sqrt(torch.tensor(2/(lambda_2*beta_v))) * torch.normal(0, sqrt_dt, size=(1, M)).float()
-        v_3 = (M-1)/(M*lambda_2*beta_v)*v_p*dt
+        v_2 = torch.sqrt(torch.tensor(2/(lambda_2*beta_v))) * torch.normal(0, sqrt_dt, size=(1, M))
+        v_3 = ((M-1)/(M*lambda_2*beta_v))*v_p*dt
         v_n = v_p - v_1 + v_2 - v_3
         u_n = u_n / torch.linalg.norm(u_n)
         v_n = v_n / torch.linalg.norm(v_n)
@@ -114,10 +114,12 @@ def main_gradient_2_avec_proj(u_p, v_p, Y, u_, v_, N, M, lambda_, beta_u, beta_v
 
     for i in range(iteration):
 
-        u_1  = 1/lambda_1 * torch.transpose(torch.mm(f.proj(u_p,N),torch.transpose(f.gradient_u_2(u_p,v_p,Y,lambda_), 0, 1)), 0, 1) * dt
-        u_2 = np.sqrt(2/(lambda_1*beta_u)) * torch.transpose(torch.mm(f.proj(u_p,N),torch.normal(0, np.sqrt(dt), size=(N, 1)).float()),0,1)
-        u_n = u_p - u_1 + u_2 - (N-1)/(N*lambda_1*beta_u)*u_p*dt
-        v_n = v_p - 1/lambda_2 * torch.transpose(torch.mm(f.proj(v_p,M),torch.transpose(f.gradient_v_2(u_p,v_p,Y,lambda_), 0, 1)), 0, 1) * dt + np.sqrt(2/(lambda_2*beta_v)) * torch.transpose(torch.mm(f.proj(v_p,M),torch.normal(0, np.sqrt(dt), size=(M, 1)).float()),0,1) - (M-1)/(M*lambda_2*beta_v)*v_p*dt
+        u_1  = (1/lambda_1) * torch.transpose(torch.mm(f.proj(u_p,N),torch.transpose(f.gradient_u_2(u_p,v_p,Y,lambda_), 0, 1)), 0, 1) * dt
+        u_2 = np.sqrt(2/(lambda_1*beta_u)) * torch.transpose(torch.mm(f.proj(u_p,N),torch.normal(0, np.sqrt(dt), size=(N, 1))),0,1)
+        u_3 = ((N-1)/(N*lambda_1*beta_u))*u_p*dt
+
+        u_n = u_p - u_1 + u_2 - u_3
+        v_n = v_p - (1/lambda_2) * torch.transpose(torch.mm(f.proj(v_p,M),torch.transpose(f.gradient_v_2(u_p,v_p,Y,lambda_), 0, 1)), 0, 1) * dt + np.sqrt(2/(lambda_2*beta_v)) * torch.transpose(torch.mm(f.proj(v_p,M),torch.normal(0, np.sqrt(dt), size=(M, 1))),0,1) - ((M-1)/(M*lambda_2*beta_v))*v_p*dt
         #print(i," : ", torch.linalg.norm(u_n), torch.linalg.norm(v_n))
         u_p = u_n
         v_p = v_n

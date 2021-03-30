@@ -5,7 +5,7 @@ import util as f
 import gradient_descent as gd
 import file_util as file_
 #Size of the matrix Y
-N = 2
+N = 10
 M = N
 
 #
@@ -16,11 +16,11 @@ list_beta_u = [1, 10, 30]
 list_beta_v = []
 
 #learning rates
-list_lambda_1 = [0.1, 1, 10, 100]
+list_lambda_1 = [100, 250, 500]
 list_lambda_2 = []
 
 # Pas de temps
-list_dt = [1, 1/2]
+list_dt = [1, 0.1]
 
 u_ = f.generate_vector(N)
 v_ = f.generate_vector(M)
@@ -46,7 +46,7 @@ for lambda_ in list_lambda_:
                 u_p = u_p_0
                 v_p = v_p_0
 
-                (res_u, res_v) = gd.main_gradient_2_sans_proj_normalisation(u_p, v_p, Y, u_, v_, N, M, lambda_, beta_u, beta_v, lambda_1, lambda_2, dt)
+                (res_u, res_v) = gd.main_gradient_2_avec_proj(u_p, v_p, Y, u_, v_, N, M, lambda_, beta_u, beta_v, lambda_1, lambda_2, dt)
                 
                 list_overlap.append((res_u, res_v))
                 storing_params.append((N, lambda_, beta_u, lambda_1, dt))

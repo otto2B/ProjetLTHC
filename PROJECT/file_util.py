@@ -4,7 +4,7 @@ import sys
 # ecrit les résultats dans un fichier csv
 # Il faut spécifier le chemin du fichier dans path.
 def writeIntoFile(over_u, over_v, N, M, lambda_, beta_u, beta_v, lambda_1, lambda_2, dt):
-    path = r"C:\Users\Admin\Desktop\Bachelor Project\GOOOOD\ProjetLTHC\PROJECT\data\data_sans_proj_avec_norm.xls"
+    path = r"C:\Users\Admin\Desktop\Bachelor Project\GOOOOD\ProjetLTHC\PROJECT\data\data_avec_proj.xls"
 
     f = open(path, 'a', newline = "")
 
