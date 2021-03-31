@@ -18,12 +18,12 @@ def overlap(x_etoile, x,d):
     return torch.mm(x_etoile, torch.transpose(x,0,1))/d
 
 
-def generate_Y(u_,v_): 
+def generate_Y(u_,v_, lambda_): 
 	n = list(u_.shape)[1]
 	m = list(v_.shape)[1]
 	uv = torch.mm(torch.transpose(u_,0,1),v_)
 	eta = torch.normal(0, 1, size=(n, m))
-	return uv + np.sqrt(n/lambda_)*eta
+	return torch.sqrt(torch.tensor(n/lambda_))*uv + eta
 	
 def proj(vector,d):
 	return torch.eye(d)- 1/d *torch.mm(torch.transpose(vector,0,1),vector)
