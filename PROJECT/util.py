@@ -20,7 +20,7 @@ def generate_Y(u_,v_, lambda_):
 	m = list(v_.shape)[1]
 	uv = torch.mm(torch.transpose(u_,0,1),v_)
 	eta = torch.normal(0, 1, size=(n, m))
-	return torch.sqrt(torch.tensor(n/lambda_))*uv + eta
+	return torch.sqrt(torch.tensor(lambda_/n))*uv + eta
 	
 def proj(vector,d):
 	return torch.eye(d) - torch.mm(torch.transpose(vector,0,1),vector)/d
