@@ -3,7 +3,7 @@ import tensorflow as tf
 import numpy as np
 import util as f
 
-iteration = 1000
+iteration = 100
 
 def main_gradient_1_sans_proj(u_p, v_p, Y, u_, v_, N, M, lambda_, beta_u, beta_v, lambda_1, lambda_2, dt):
 
@@ -82,24 +82,24 @@ def main_gradient_2_sans_proj_normalisation(u_p, v_p, Y, u_, v_, N, M, lambda_, 
 
     for i in range(iteration):
 
-        sqrt_dt = torch.tensor(np.sqrt(dt))
+        sqrt_dt = torch.sqrt(dt)
 
-        u_1 = (1/lambda_1) * f.gradient_u_2(u_p,v_p,Y,lambda_) * dt
-        u_2 = torch.sqrt(torch.tensor(2/(lambda_1*beta_u))) * torch.normal(0, sqrt_dt, size=(1, N))
+        u_1 = (1/lambda_1) * f.gradient_u_2(N, M, u_p,v_p,Y,lambda_) * dt
+        u_2 = torch.sqrt(2/(lambda_1*beta_u)) * torch.empty(N).normal_(mean=0,std=sqrt_dt)
         u_3 = ((N-1)/(N*lambda_1*beta_u))*u_p*dt
 
         #print(u_1, " ", u_2, " ", u_3)
 
         u_n = u_p - u_1 + u_2 - u_3
 
-        v_1 = 1/lambda_2 * f.gradient_v_2(u_p,v_p,Y,lambda_) * dt
-        v_2 = torch.sqrt(torch.tensor(2/(lambda_2*beta_v))) * torch.normal(0, sqrt_dt, size=(1, M))
+        v_1 = 1/lambda_2 * f.gradient_v_2(N,M,u_p,v_p,Y,lambda_) * dt
+        v_2 = torch.sqrt(2/(lambda_2*beta_v)) * torch.empty(M).normal_(mean=0,std=sqrt_dt)
         v_3 = ((M-1)/(M*lambda_2*beta_v))*v_p*dt
         v_n = v_p - v_1 + v_2 - v_3
         u_n = u_n / torch.linalg.norm(u_n)
         v_n = v_n / torch.linalg.norm(v_n)
-        u_n = u_n * torch.sqrt(torch.tensor(N))
-        v_n = v_n * torch.sqrt(torch.tensor(N))
+        u_n = u_n * torch.sqrt(N)
+        v_n = v_n * torch.sqrt(M)
         #print(i," : ", torch.linalg.norm(u_n), torch.linalg.norm(v_n))
         u_p = u_n
         v_p = v_n
