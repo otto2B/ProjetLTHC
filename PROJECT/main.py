@@ -77,8 +77,8 @@ def main():
 
 
 # LIST OF VALUE THAT WILL BE TESTED
-list_value_ = torch.tensor([0.0001, 0.0005, 0.001, 0.005,  0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.925, 0.95, 0.975, 1, 1.1, 1.15, 1.5, 1.2, 1.5, 1.7, 2, 5, 7, 10, 15, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200])
-#list_value_ = torch.arange(0.1, 100, 0.1)
+#list_value_ = torch.tensor([0.0001, 0.0005, 0.001, 0.005,  0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.925, 0.95, 0.975, 1, 1.1, 1.15, 1.5, 1.2, 1.5, 1.7, 2, 5, 7, 10, 15, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200])
+list_value_ = torch.arange(0.1, 1000, 0.1)
 
 # Run the algo for all the given value
 for value_to_test in list_value_:
@@ -97,12 +97,15 @@ if(run_on_gpu):
 
 
 # Plot the result
-for i in range(len(res_u)):
-    plt.plot(list_value_[i], res_u[i], 'b.')
-    plt.plot(list_value_[i], res_v[i], 'r.')
+# linestyle=None or solid
+# marker="" or "."
+plt.plot(list_value_, res_v, linestyle = 'solid', marker= "", label="v_overlap")
+plt.plot(list_value_, res_u, linestyle = 'solid', marker= "", label="u_overlap")
+plt.legend()
 
 plt.xlabel('lambda_')
 plt.ylabel('overlap')
+
 extraticks = [1]
 plt.xticks(list(plt.xticks()[0]) + extraticks)
 plt.show()
