@@ -1,4 +1,4 @@
-# ProjetLTHC
+# Project at LTHC
 Semester project at EPFL by Théo &amp; Constantin
 
 The project is an inference problem. Given a generated matrix we want to reconstruct its main components by minimizing a loss function by gradient descent. 
