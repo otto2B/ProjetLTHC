@@ -1,5 +1,5 @@
 # ProjetLTHC
-Projet de semestre Théo &amp; Constantin
+Semester project at EPFL by Théo &amp; Constantin
 
 The project is an inference problem. Given a generated matrix we want to reconstruct its main components by minimizing a loss function by gradient descent. 
 To avoid local minimum we add to the descent a perturbation in the form of a Brownian motion. In a first time we will implement a framework that will allow 
