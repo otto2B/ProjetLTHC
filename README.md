@@ -14,5 +14,5 @@ v(t).
 Then, in the gradient descent.py file we defined three gradient descents for each type of gradient, one using
 projections, one without projections and one without projections but with normalization at each step.
 We ran the simulations on two different jupyter notebooks simulation2D.ipynb which displays MSEs or overlaps
-in functions of βu and βv for a certain learning rate ratio (λu/λv). The second one, simulation3D.ipynb compares λv
+in functions of βu and βv for a certain learning rate ratio (λu/λv). The second one, simulation3D.ipynb compares
 two different simulations (different learning speed ratios) on the same graph.
